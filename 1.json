@@ -1,0 +1,29 @@
+[
+    {
+      "$lookup": {
+        "from": "comments", 
+        "localField": "_id", 
+        "foreignField": "movie_id", 
+        "as": "comments" 
+      }
+    },
+    {
+      "$project": {
+        "_id": 0, 
+        "title": 1, 
+        "comments": {
+          "$map": {
+            "input": "$comments",
+            "as": "comment", 
+            "in": {
+              "name": "$$comment.name",
+              "email": "$$comment.email",
+              "text": "$$comment.text",
+              "date": "$$comment.date"
+            }
+          }
+        }
+      }
+    }
+  ]
+  
